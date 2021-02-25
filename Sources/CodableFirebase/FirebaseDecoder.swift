@@ -27,6 +27,8 @@ open class FirebaseDecoder {
         /// Decode the `Date` as a string parsed by the given formatter.
         case formatted(DateFormatter)
         
+        case timestamp
+        
         /// Decode the `Date` as a custom value decoded by the given closure.
         case custom((_ decoder: Decoder) throws -> Date)
     }

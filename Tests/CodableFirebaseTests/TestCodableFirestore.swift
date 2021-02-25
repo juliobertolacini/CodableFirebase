@@ -139,6 +139,14 @@ class TestCodableFirestore: XCTestCase {
         XCTAssertEqual((try? FirestoreEncoder().encode(wrapper)) as NSDictionary?, ["value": timestamp])
         XCTAssertEqual(try? FirestoreDecoder().decode(TopLevelWrapper<Timestamp>.self, from: ["value": timestamp]), wrapper)
     }
+    
+    func testEncodingTimestamp2() {
+        let timestamp = Timestamp(date: Date())
+        let wrapper = TopLevelWrapper(timestamp.dateValue())
+        let a = try? FirestoreEncoder(dateEncodingStrategy: .timestamp(Timestamp.self)).encode(wrapper) as! [String : Timestamp]
+        XCTAssertEqual(a, ["value": timestamp])
+        XCTAssertEqual(try? FirestoreDecoder(dateDecodingStrategy: .timestamp).decode(TopLevelWrapper<Date>.self, from: ["value": timestamp]), wrapper)
+    }
   
     private func _testEncodeFailure<T : Encodable>(of value: T) {
         do {

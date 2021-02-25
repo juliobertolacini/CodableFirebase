@@ -27,6 +27,8 @@ open class FirebaseEncoder {
         /// Encode the `Date` as a string formatted by the given formatter.
         case formatted(DateFormatter)
         
+        case timestamp(TimestampType.Type)
+        
         /// Encode the `Date` as a custom value encoded by the given closure.
         ///
         /// If the closure fails to encode a value into the given encoder, the encoder will encode an empty automatic container in its place.

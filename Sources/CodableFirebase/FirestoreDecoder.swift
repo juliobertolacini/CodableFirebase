@@ -26,14 +26,22 @@ public protocol TimestampType: FirestoreDecodable, FirestoreEncodable {
 }
 
 open class FirestoreDecoder {
-    public init() {}
+    public init(
+        dateDecodingStrategy: FirebaseDecoder.DateDecodingStrategy? = nil,
+        dataDecodingStrategy: FirebaseDecoder.DataDecodingStrategy? = nil
+    ) {
+        self.dateDecodingStrategy = dateDecodingStrategy
+        self.dataDecodingStrategy = dataDecodingStrategy
+    }
     
     open var userInfo: [CodingUserInfoKey : Any] = [:]
+    open var dateDecodingStrategy: FirebaseDecoder.DateDecodingStrategy?
+    open var dataDecodingStrategy: FirebaseDecoder.DataDecodingStrategy?
     
     open func decode<T : Decodable>(_ type: T.Type, from container: [String: Any]) throws -> T {
         let options = _FirebaseDecoder._Options(
-            dateDecodingStrategy: nil,
-            dataDecodingStrategy: nil,
+            dateDecodingStrategy: dateDecodingStrategy,
+            dataDecodingStrategy: dataDecodingStrategy,
             skipFirestoreTypes: true,
             userInfo: userInfo
         )
@@ -81,6 +89,26 @@ extension FirestoreEncodable {
         throw DocumentReferenceError.typeIsNotSupported
     }
 }
+
+public protocol XX: Codable {
+    init(date: Date)
+    func dateValue() -> Date
+}
+
+class InternalTimestamp {
+    
+    var date: Date
+    
+    public required init(date: Date) {
+        self.date = date
+    }
+    
+    public func dateValue() -> Date {
+        return self.date
+    }
+}
+
+extension InternalTimestamp: TimestampType {}
 
 extension TimestampType {
     public init(from decoder: Decoder) throws {

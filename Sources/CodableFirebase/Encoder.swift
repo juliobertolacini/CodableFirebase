@@ -339,6 +339,10 @@ extension _FirebaseEncoder {
         case .formatted(let formatter):
             return NSString(string: formatter.string(from: date))
             
+        case .timestamp(let type):
+            let timestamp = type.init(date: date)
+            return timestamp as! NSObject
+            
         case .custom(let closure):
             let depth = self.storage.count
             try closure(date, self)

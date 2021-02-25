@@ -1167,6 +1167,10 @@ extension _FirebaseDecoder {
             
             return date
             
+        case .timestamp:
+            let timestamp = value as? TimestampType
+            return timestamp?.dateValue()
+            
         case .custom(let closure):
             self.storage.push(container: value)
             let date = try closure(self)

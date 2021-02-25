@@ -9,9 +9,17 @@
 import Foundation
 
 open class FirestoreEncoder {
-    public init() {}
+    public init(
+        dateEncodingStrategy: FirebaseEncoder.DateEncodingStrategy? = nil,
+        dataEncodingStrategy: FirebaseEncoder.DataEncodingStrategy? = nil
+    ) {
+        self.dateEncodingStrategy = dateEncodingStrategy
+        self.dataEncodingStrategy = dataEncodingStrategy
+    }
     
     open var userInfo: [CodingUserInfoKey : Any] = [:]
+    open var dateEncodingStrategy: FirebaseEncoder.DateEncodingStrategy?
+    open var dataEncodingStrategy: FirebaseEncoder.DataEncodingStrategy?
     
     open func encode<Value : Encodable>(_ value: Value) throws -> [String: Any] {
         let topLevel = try encodeToTopLevelContainer(value)
@@ -27,8 +35,8 @@ open class FirestoreEncoder {
     
     internal func encodeToTopLevelContainer<Value : Encodable>(_ value: Value) throws -> Any {
         let options = _FirebaseEncoder._Options(
-            dateEncodingStrategy: nil,
-            dataEncodingStrategy: nil,
+            dateEncodingStrategy: dateEncodingStrategy,
+            dataEncodingStrategy: dataEncodingStrategy,
             skipFirestoreTypes: true,
             userInfo: userInfo
         )
