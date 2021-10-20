@@ -14,6 +14,6 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.source = { :git => "https://github.com/juliobertolacini/CodableFirebase.git", :tag => s.version, :branch => 'master'}
-  s.source_files = "CodableFirebase/*.swift"
+  s.source_files = "Sources/**/*.swift"
   s.swift_version = '5.0'
 end
